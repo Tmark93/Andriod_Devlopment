@@ -42,7 +42,7 @@ fun UpdateScreen(navController: NavController){
                 titleContentColor = MaterialTheme.colorScheme.primary,
             ),
             title = {
-                TextInputTopBar()
+                TextInputTopBar(title) {title = it}
             },
             navigationIcon = {
                 IconButton(onClick = {navController.navigateUp()
@@ -51,34 +51,26 @@ fun UpdateScreen(navController: NavController){
                 }
             }
         )
-        TextInputCenter()
+        TextInputCenter(text) {text = it}
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInputTopBar(){
-    var text by rememberSaveable {
-        mutableStateOf("")
-    }
-    TextField(value = text,
-        onValueChange = {
-            text = it
-        },
-        label = { Text(text = "Enter Label") },
+fun TextInputTopBar(title: String, textChange: (String) -> Unit){
+    TextField( value = title,
+        onValueChange = textChange,
+        label = { Text(text = "Enter Title") },
         placeholder = { Text(text = "PlaceHolder")},
     )
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInputCenter(){
-    var text by rememberSaveable {
-        mutableStateOf("")
-    }
+fun TextInputCenter(text: String, textChange: (String) -> Unit){
     OutlinedTextField(value = text,
-        onValueChange = {
-            text = it },
+        onValueChange = textChange,
         modifier = Modifier.fillMaxSize().padding(16.dp)
     )
 }
