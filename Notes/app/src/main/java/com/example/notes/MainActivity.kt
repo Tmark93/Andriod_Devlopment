@@ -64,12 +64,17 @@ fun Navigation() {
                 notesSaved = { updatedNote ->
                     if (noteId == null) {
                         noteList = noteList + updatedNote
-                } else {
-                    noteList = noteList.map {
-                        if (it.id == updatedNote.id) updatedNote else it
+                    } else {
+                        noteList = noteList.map {
+                            if (it.id == updatedNote.id) updatedNote else it
+                        }
                     }
-                }
-            }, noteId = noteId)
+                },
+                notesDeleted = { noteDeleted ->
+                    noteList = noteList.filter { it.id != noteDeleted.id }
+                },
+                noteId = noteId,
+                noteList = noteList)
         }
     }
 }

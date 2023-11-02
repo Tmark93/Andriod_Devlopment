@@ -1,17 +1,31 @@
 package com.example.notes
 
 
+import android.widget.Button
+import android.widget.Space
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -21,9 +35,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.UUID
 
 
@@ -31,24 +47,41 @@ import java.util.UUID
 @Composable
 fun UpdateScreen(navController: NavController,
                  notesSaved: (Notes) -> Unit,
-                 noteId: UUID?
+                 notesDeleted: (Notes) -> Unit,
+                 noteId: UUID?,
+                 noteList: List<Notes>
 ) {
     val newNote = noteId == null
-    var title by rememberSaveable { mutableStateOf("") }
-    var text by rememberSaveable { mutableStateOf("") }
+    val noteToEdit = noteList.find { it.id == noteId }
+    var title by rememberSaveable { mutableStateOf(noteToEdit?.title ?: "") }
+    var text by rememberSaveable { mutableStateOf(noteToEdit?.text ?: "") }
 
     Column(Modifier.fillMaxSize()) {
-        TopAppBar(
-            colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-            ),
-            title = {
-                TextInputTopBar(title) {title = it}
+        Scaffold (
+            topBar = {
+                TopAppBar(
+                    colors = TopAppBarDefaults.mediumTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        TextInputTopBar(title) { title = it }
+                    },
+                    navigationIcon = {
+                        if (noteId != null) {
+                            IconButton(onClick = {
+                                noteToEdit?.let { notesDeleted(it)}
+                                navController.navigateUp()
+                            }) {
+                                Icon(Icons.Filled.Delete, "delete")
+                            }
+                        }
+                    }
+                )
             },
-            navigationIcon = {
-                IconButton(onClick = {
-                    val note = if (newNote){
+            floatingActionButton = {
+                FloatingActionButton(onClick = {
+                    val note = if (newNote) {
                         Notes(id = UUID.randomUUID(), title = title, text = text)
                     } else {
                         Notes(id = noteId!!, title = title, text = text)
@@ -56,12 +89,16 @@ fun UpdateScreen(navController: NavController,
                     notesSaved(note)
                     navController.navigateUp()
                 }) {
-                    Icon(Icons.Filled.Save, "saveIcon")
+                    Icon(Icons.Default.Save, contentDescription = "New Note")
                 }
             }
-        )
-        TextInputCenter(text) {text = it}
+        ) {innerPadding ->
+            Column(Modifier.padding(innerPadding)) {
+                TextInputCenter(text = text, textChange = {text = it})
+            }
+        }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,6 +117,8 @@ fun TextInputTopBar(title: String, textChange: (String) -> Unit){
 fun TextInputCenter(text: String, textChange: (String) -> Unit){
     OutlinedTextField(value = text,
         onValueChange = textChange,
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     )
 }

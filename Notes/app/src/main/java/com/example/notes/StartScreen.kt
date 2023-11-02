@@ -14,8 +14,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,7 +64,7 @@ fun StartScreen(navController: NavController, note: List<Notes>,
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = savedNotes) {
-                    Icon(Icons.Default.Create, contentDescription = "New Note")
+                    Icon(Icons.Default.NoteAdd, contentDescription = "New Note")
                 }
             }
         ) {innerPadding ->
@@ -95,7 +97,7 @@ fun DisplaySavedNotes(notes: Notes,
                 if (expanded) {
                         Text(text = notes.text)
                         Button(onClick = { editNote(notes) }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit Note")
+                            Icon(Icons.Default.EditNote, contentDescription = "Edit Note")
                     }
                     }
                 }
