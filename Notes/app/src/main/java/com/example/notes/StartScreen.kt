@@ -56,7 +56,7 @@ fun StartScreen(navController: NavController, note: List<Notes>,
                         titleContentColor = MaterialTheme.colorScheme.primary,
                     ),
                     title = {
-                        Text("Notes")
+                        Text("Test")
                     }
                 )
             },
