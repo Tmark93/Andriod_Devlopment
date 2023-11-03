@@ -2,12 +2,15 @@ package com.example.notes
 
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -21,34 +24,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showBackground = true)
-fun StartScreen() {
+fun StartScreen(navController: NavController){
     var newNote by remember { mutableStateOf(0) }
+    Column(Modifier.fillMaxSize()) {
+        TopAppBar(
+            colors = TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
 
-    Scaffold (
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text("Notes")
+            },
+            navigationIcon = {
+                IconButton(onClick = {navController.navigate(Screen.UpdateScreen.route)
+                }) {
+                    Icon(Icons.Filled.ArrowBack, "backIcon")
                 }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {  newNote++ }) {
-                Icon(Icons.Default.Add, contentDescription = "New Note")
             }
-        }
-    ){
-        Text("Number of notes: $newNote", modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center)
+        )
+
     }
 }
 
