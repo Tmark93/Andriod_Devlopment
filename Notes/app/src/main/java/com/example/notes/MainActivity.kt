@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.notes.ui.theme.NotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,31 +20,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NotesTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
+                Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ) {
-                    UpdateScreen()
-                }
+                ){
+                    Navigation()
+                 }
+              }
             }
+        }
+    }
+
+
+@Composable
+fun Navigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController, startDestination = Screen.StartScreen.route) {
+        composable(Screen.StartScreen.route){
+            StartScreen(navController)
+        }
+        composable(Screen.UpdateScreen.route){
+            UpdateScreen(navController)
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NotesTheme {
-        UpdateScreen()
-    }
-}

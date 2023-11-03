@@ -34,7 +34,7 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateScreen(navController: NavController){
-    var newNote by remember { mutableStateOf(0) }
+
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
             colors = TopAppBarDefaults.mediumTopAppBarColors(
