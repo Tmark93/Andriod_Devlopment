@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.notes.ui.theme.NotesTheme
+import java.util.UUID
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,15 +46,30 @@ fun Navigation() {
     }
 
     NavHost(navController, startDestination = Screen.StartScreen.route) {
+
         composable(Screen.StartScreen.route){
             StartScreen(navController = navController,
                 note = noteList,
-                savedNotes = {navController.navigate(Screen.UpdateScreen.route)})
+                savedNotes = {
+                    navController.navigate("${Screen.UpdateScreen.route}/null")}
+            )
+
         }
-        composable(Screen.UpdateScreen.route){
-            UpdateScreen(navController) { notes ->
-                noteList = noteList + notes
-            }
+
+        composable("${Screen.UpdateScreen.route}/{noteId}"){  backStackEntry ->
+            val noteIdStr = backStackEntry.arguments?.getString("noteId")
+            val noteId = if (noteIdStr == "null") null else noteIdStr?.let { UUID.fromString(it) }
+
+            UpdateScreen(navController = navController,
+                notesSaved = { updatedNote ->
+                    if (noteId == null) {
+                        noteList = noteList + updatedNote
+                } else {
+                    noteList = noteList.map {
+                        if (it.id == updatedNote.id) updatedNote else it
+                    }
+                }
+            }, noteId = noteId)
         }
     }
 }

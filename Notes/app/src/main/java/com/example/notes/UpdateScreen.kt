@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,11 +24,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateScreen(navController: NavController, notesSaved: (Notes) -> Unit ){
+fun UpdateScreen(navController: NavController,
+                 notesSaved: (Notes) -> Unit,
+                 noteId: UUID?
+) {
+    val newNote = noteId == null
     var title by rememberSaveable { mutableStateOf("") }
     var text by rememberSaveable { mutableStateOf("") }
 
@@ -42,10 +48,15 @@ fun UpdateScreen(navController: NavController, notesSaved: (Notes) -> Unit ){
             },
             navigationIcon = {
                 IconButton(onClick = {
-                    notesSaved(Notes(title, text))
+                    val note = if (newNote){
+                        Notes(id = UUID.randomUUID(), title = title, text = text)
+                    } else {
+                        Notes(id = noteId!!, title = title, text = text)
+                    }
+                    notesSaved(note)
                     navController.navigateUp()
                 }) {
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
+                    Icon(Icons.Filled.Save, "saveIcon")
                 }
             }
         )
