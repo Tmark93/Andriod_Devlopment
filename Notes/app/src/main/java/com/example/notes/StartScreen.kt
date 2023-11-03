@@ -1,6 +1,8 @@
 package com.example.notes
 
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,11 +18,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 
 
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Preview(showBackground = true)
 fun StartScreen() {
     var newNote by remember { mutableStateOf(0) }
 
@@ -41,7 +47,9 @@ fun StartScreen() {
                 Icon(Icons.Default.Add, contentDescription = "New Note")
             }
         }
-    ) { innerPadding -> ScrollContent(innerPadding) }
+    ){
+        Text("Number of notes: $newNote", modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center)
+    }
 }
 
 
