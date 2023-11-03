@@ -1,7 +1,9 @@
 package com.example.notes
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -25,36 +27,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 
 
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
-fun UpdateScreen() {
+fun UpdateScreen(){
     var newNote by remember { mutableStateOf(0) }
-
-    Scaffold (
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    TextInputTopBar()
-                },
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Filled.ArrowBack, "backCcon")
-                    }
+    Column(Modifier.fillMaxSize()) {
+        TopAppBar(
+            colors = TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
+                TextInputTopBar()
+            },
+            navigationIcon = {
+                IconButton(onClick = {}) {
+                    Icon(Icons.Filled.ArrowBack, "backIcon")
                 }
-            )
-        }
-    ){
-        Text("Number of notes: $newNote", modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center)
+            }
+        )
+        TextInputCenter()
     }
 }
 
@@ -70,5 +67,18 @@ fun TextInputTopBar(){
         },
         label = { Text(text = "Enter Label") },
         placeholder = { Text(text = "PlaceHolder")},
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextInputCenter(){
+    var text by rememberSaveable {
+        mutableStateOf("")
+    }
+    OutlinedTextField(value = text,
+        onValueChange = {
+            text = it },
+        modifier = Modifier.fillMaxSize().padding(16.dp)
     )
 }
