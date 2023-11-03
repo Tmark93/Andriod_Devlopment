@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -27,27 +28,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreen(navController: NavController){
-    var newNote by remember { mutableStateOf(0) }
-    Column(Modifier.fillMaxSize()) {
-        TopAppBar(
-            colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-            ),
-            title = {
 
+    Column(Modifier.fillMaxSize()) {
+        Scaffold (
+            topBar = {
+                TopAppBar(
+                    colors = TopAppBarDefaults.mediumTopAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        Text("Notes")
+                    }
+                )
             },
-            navigationIcon = {
-                IconButton(onClick = {navController.navigate(Screen.UpdateScreen.route)
+            floatingActionButton = {
+                FloatingActionButton(onClick = { navController.navigate(Screen.UpdateScreen.route)
                 }) {
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
+                    Icon(Icons.Default.Create, contentDescription = "New Note")
                 }
             }
-        )
-
+        ) {
+    }
     }
 }
 

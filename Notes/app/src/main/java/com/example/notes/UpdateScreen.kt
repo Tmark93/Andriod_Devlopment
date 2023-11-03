@@ -28,13 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
+import androidx.navigation.NavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showBackground = true)
-fun UpdateScreen(){
+fun UpdateScreen(navController: NavController){
     var newNote by remember { mutableStateOf(0) }
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
@@ -46,7 +45,8 @@ fun UpdateScreen(){
                 TextInputTopBar()
             },
             navigationIcon = {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {navController.navigateUp()
+                }) {
                     Icon(Icons.Filled.ArrowBack, "backIcon")
                 }
             }
