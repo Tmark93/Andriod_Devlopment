@@ -42,7 +42,8 @@ import androidx.navigation.NavController
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(navController: NavController){
+fun StartScreen(navController: NavController, note: List<Notes>,
+                savedNotes: () -> Unit){
 
     Column(Modifier.fillMaxSize()) {
         Scaffold (
@@ -58,19 +59,18 @@ fun StartScreen(navController: NavController){
                 )
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = { navController.navigate(Screen.UpdateScreen.route)
-                }) {
+                FloatingActionButton(onClick = savedNotes) {
                     Icon(Icons.Default.Create, contentDescription = "New Note")
                 }
             }
         ) {innerPadding ->
-            MyApp(modifier = Modifier.padding(innerPadding))
+            MyApp(modifier = Modifier.padding(innerPadding), note = note)
     }
     }
 }
 
 @Composable
-fun DisplaySavedNotes(name: String) {
+fun DisplaySavedNotes(notes: Notes) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -87,10 +87,9 @@ fun DisplaySavedNotes(name: String) {
                     .weight(1f)
                     .padding(bottom = extraPadding)
             ) {
-                Text(text = "Hello")
-                Text(text = name)
+                Text(text = notes.title)
                 if (expanded) {
-                        Text(text = "Jag gillar kodning i andriod" + "Jag gillar kodning i andriod")
+                        Text(text = notes.text)
                     }
                 }
             IconButton(onClick = { expanded = !expanded }) {
@@ -111,11 +110,11 @@ fun DisplaySavedNotes(name: String) {
 @Composable
 fun MyApp(
     modifier: Modifier = Modifier,
-    names: List<String> = List(10) { "$it"}
+    note: List<Notes>
 ) {
     LazyColumn(modifier) {
-        items(items = names){ name ->
-            DisplaySavedNotes(name = name)
+        items(items = note){ notes ->
+            DisplaySavedNotes(notes = notes)
         }
     }
 }

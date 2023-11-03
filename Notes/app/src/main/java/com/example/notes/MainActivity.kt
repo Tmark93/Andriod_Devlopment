@@ -8,6 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -35,14 +40,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
+    var noteList by remember {
+        mutableStateOf(listOf<Notes>())
+    }
 
     NavHost(navController, startDestination = Screen.StartScreen.route) {
         composable(Screen.StartScreen.route){
-            StartScreen(navController)
+            StartScreen(navController = navController,
+                note = noteList,
+                savedNotes = {navController.navigate(Screen.UpdateScreen.route)})
         }
         composable(Screen.UpdateScreen.route){
-            UpdateScreen(navController)
+            UpdateScreen(navController) { notes ->
+                noteList = noteList + notes
+            }
         }
     }
 }
+
 
