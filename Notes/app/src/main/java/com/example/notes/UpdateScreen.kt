@@ -1,5 +1,6 @@
 package com.example.notes
 
+<<<<<<< HEAD
 
 import android.widget.Button
 import android.widget.Space
@@ -122,3 +123,5 @@ fun TextInputCenter(text: String, textChange: (String) -> Unit){
             .padding(16.dp)
     )
 }
+=======
+>>>>>>> 47b905e (Added some classes/files)

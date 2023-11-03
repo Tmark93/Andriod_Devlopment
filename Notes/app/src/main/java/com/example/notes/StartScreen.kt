@@ -1,5 +1,6 @@
 package com.example.notes
 
+<<<<<<< HEAD
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -134,4 +135,9 @@ fun MyApp(
 
 
 
+=======
+import androidx.compose.runtime.Composable
+
+@Composable
+>>>>>>> 47b905e (Added some classes/files)
 
